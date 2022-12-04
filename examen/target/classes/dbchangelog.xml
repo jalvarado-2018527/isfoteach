@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="horarios" author="jairo">
+        <createTable tableName="horarios">
+            <column name="id" type="integer" autoIncrement="true" remarks="id">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="horarios_PK"/>
+            </column>
+            <column name="hora" type="time" remarks="12:00"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="usuarios" author="jairo">
+            <createTable tableName="usuarios">
+                <column name="codigo" type="integer" autoIncrement="true" remarks="id">
+                    <constraints primaryKey="true" nullable="false" primaryKeyName="usuarios_PK"/>
+                </column>
+                <column name="nombre" type="varchar(50)" remarks="juan"/>
+                <column name="correo" type="varchar(100)" remarks="jaun@asd.com"/>
+                <column name="telefono" type="varchar(100)" remarks="97538261"/>
+            </createTable>
+        </changeSet>
+
+        <changeSet id="distribuidores" author="Jairo">
+                <createTable tableName="distribuidores">
+                    <column name="codigo" type="integer" autoIncrement="true" remarks="ID">
+                        <constraints primaryKey="true" nullable="false" primaryKeyName="distribuidora_fk"/>
+                        </column>
+                        <column name="nombre" type="varchar(100)" remarks="nombre de la distribuidora">
+                            <constraints unique="true" uniqueConstraintName="NOMBRE_UK"/>
+                        </column>
+                        <column name="usuario_id" type="integer" remarks="id de distribuidores"/>
+                        <column name="cNotificacion" type="varchar(100)" remarks="Correo de Notificacion"/>
+                        <column name="cAlertas" type="varchar(100)" remarks="Correo de alertas"/>
+                    </createTable>
+                    <addForeignKeyConstraint baseColumnNames="usuario_id" baseTableName="distribuidores" constraintName="distribuidor_usuario__fk" 
+                        referencedColumnNames="codigo"
+                        referencedTableName="usuarios"
+                        onDelete="CASCADE"
+                        onUpdate="CASCADE"/>
+                    <addNotNullConstraint columnDataType="int" columnName="codigo" tableName="usuarios"/>
+            </changeSet>
+
+        <changeSet id="productos" author="jairo">
+            <createTable tableName="productos">
+                <column name="codigo" type="integer" autoIncrement="true" remarks="id">
+                    <constraints primaryKey="true" nullable="false" primaryKeyName="productos_PK"/>
+                </column>
+                <column name="nombre" type="varchar(50)" remarks="tortrix"/>
+                <column name="monto" type="integer" remarks="12"/>
+                <column name="descripcion" type="varchar(50)" remarks="tortrix"/>
+                <column name="distribuidores_id" type="integer" remarks="tortrix"/>
+            </createTable>
+            <addForeignKeyConstraint baseColumnNames="distribuidores_id" baseTableName="productos" constraintName="producto_distribuidor_FK" 
+                referencedColumnNames="codigo"
+                referencedTableName="distribuidores"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+            <addNotNullConstraint columnDataType="int" columnName="codigo" tableName="productos"/>
+        </changeSet>
+        
+        <changeSet id="canales" author="jairo">
+            <createTable tableName="canales">
+                <column name="codigo" type="integer" autoIncrement="true" remarks="id">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="canales_PK"/>
+                </column>
+                <column name="producto_id" type="integer" remarks="id de distribuidores"/>
+                <column name="horario_id" type="integer" remarks="id de hora"/>
+                <column name="nombre" type="varchar(50)" remarks="Mayoriasta"/>
+            </createTable>
+            <addForeignKeyConstraint baseColumnNames="producto_id" baseTableName="canales" constraintName="canal_producto_fk" 
+                referencedColumnNames="codigo"
+                referencedTableName="productos"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+            <addForeignKeyConstraint baseColumnNames="horario_id" baseTableName="canales" constraintName="canal_horario_fk" 
+                referencedColumnNames="id"
+                referencedTableName="horarios"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+            <addNotNullConstraint columnDataType="int" columnName="codigo" tableName="canales"/>
+        </changeSet>
+</databaseChangeLog>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
